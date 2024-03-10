@@ -1,0 +1,16 @@
+{
+  "name": "time-tracker-workspace",
+  "version": "1.0.0",
+  "description": "This repository contains a Yarn Workspace where the entire infrastructure of the TimeTracker application is located",
+  "main": "index.js",
+  "repository": "git@github.com:jmartinez3421/time-tracker.git",
+  "author": "Jordi Martínez <jmartinezg.fp@gmail.com>",
+  "license": "LGPL-3.0-only",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*"
+    ]
+  },
+  "packageManager": "yarn@3.6.4"
+}
