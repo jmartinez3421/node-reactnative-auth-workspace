@@ -1,3 +1,6 @@
 import "dotenv/config";
 
-console.log("Hello, world!")
+import { Server } from "@/models/Server";
+
+const server = new Server();
+server.start();
