@@ -1,4 +1,7 @@
-# TimeTracker Workspace
-This repository contains a Yarn Workspace where the entire infrastructure of the TimeTracker application is located, a mobile app in which you will be able to keep track of the time you spend on each project. 
+# Node + React-Native Auth Workspace
+This is a workspace for Node.js and React-Native. It includes a Node.js server and a React-Native app. 
 
-The API is written in NodeJS and the FrontEnd in React Native.
+The server is a simple REST API that uses JWT for authentication. It provides a basic user model with all the CRUD operations.
+It also provides a basic reset password enpoint that sends an email to the user with a token to reset the password.
+
+The app is a simple login screen that uses the server for authentication. It uses Expo routes for navigation and Route guards to protect the routes that require authentication.
