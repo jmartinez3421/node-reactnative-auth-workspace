@@ -10,7 +10,21 @@ const Login = [
 
 const Renew = JWTValidator;
 
+const ForgotPassword = [
+    check("email", "Email is required").notEmpty(),
+    CheckErrors,
+];
+
+const ResetPassword = [
+    check("email", "Email is required").notEmpty(),
+    check("token", "Token is required").notEmpty(),
+    check("password", "Password is required").notEmpty(),
+    CheckErrors,
+];
+
 export default {
     Login,
     Renew,
+    ForgotPassword,
+    ResetPassword,
 };
