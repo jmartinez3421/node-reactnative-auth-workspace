@@ -11,7 +11,7 @@ import { generateRecoverCode } from "@/helpers/userHelpers";
 type LoginHandler = RequestHandler<
     object,
     ResponseType<{ token: string }>,
-    { email: string; password: string },
+    { email: string; password: string; remember?: boolean },
     object
 >;
 /**
@@ -21,7 +21,7 @@ type LoginHandler = RequestHandler<
  * @constructor
  */
 const Login: LoginHandler = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, remember } = req.body;
     try {
         const user = await UserModel.findOne({ email });
         if (!user || !user.status) {
@@ -37,7 +37,7 @@ const Login: LoginHandler = async (req, res) => {
                 msg: "Invalid password",
             });
         }
-        const token = await generateJWT(user.id);
+        const token = await generateJWT(user.id, remember);
         res.json({
             ok: true,
             data: { token },
