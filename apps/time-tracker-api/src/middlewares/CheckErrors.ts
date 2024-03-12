@@ -1,10 +1,16 @@
-import { NextFunction, Request, Response } from "express";
+import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
+import { ResponseType } from "@/types/ResponseType";
 
-export const CheckErrors = (req: Request, res: Response, next: NextFunction) => {
+type CheckErrorsHandler = RequestHandler<object, ResponseType<object>, object, object>;
+export const CheckErrors: CheckErrorsHandler = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(406).json(errors);
+        return res.status(406).json({
+            ok: false,
+            msg: "Invalid data",
+            errors: errors.array().map((e) => e.msg),
+        });
     }
 
     next();

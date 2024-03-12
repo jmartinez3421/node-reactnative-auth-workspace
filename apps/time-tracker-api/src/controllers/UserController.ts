@@ -12,11 +12,13 @@ const GetUser: GetUserHandler = async (req, res) => {
     try {
         const user = parseDocumentUser(loggedUser);
         return res.json({
+            ok: true,
             data: user,
         });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
+            ok: false,
             msg: "Internal server error",
         });
     }
@@ -48,6 +50,7 @@ const CreateUser: CreateUserHandler = async (req, res) => {
         const token = await generateJWT(user._id);
 
         return res.json({
+            ok: true,
             data: {
                 token,
             },
@@ -55,6 +58,7 @@ const CreateUser: CreateUserHandler = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
+            ok: false,
             msg: "Internal server error",
         });
     }
@@ -79,11 +83,13 @@ const UpdateUser: UpdateUserHandler = async (req, res) => {
         await loggedUser.save();
 
         return res.json({
+            ok: true,
             data: parseDocumentUser(loggedUser),
         });
     } catch (error) {
         console.log(error);
         return res.status(500).json({
+            ok: false,
             msg: "Internal server error",
         });
     }
@@ -95,12 +101,14 @@ const DeleteUser: DeleteUserHandler = async (req, res) => {
     try {
         await loggedUser.updateOne({ status: false });
         res.json({
-            msg: `The user has been deleted`,
+            ok: true,
+            data: { msg: `The user has been deleted` },
         });
     } catch (err) {
         console.log(err);
         res.status(500).json({
-            msg: "There was an error in the server. Try again or contact the administrator",
+            ok: false,
+            msg: "Internal server error",
         });
     }
 };

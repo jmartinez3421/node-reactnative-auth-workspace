@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
 import { DocumentUser } from "@/db/models/user";
 import bcryptjs from "bcryptjs";
+import { ResponseType } from "@/types/ResponseType";
 
 type CheckPasswordHandler = RequestHandler<
     object,
-    { msg: string },
+    ResponseType<object>,
     { loggedUser: DocumentUser; password: string },
     object
 >;
@@ -23,10 +24,15 @@ export const CheckPassword: CheckPasswordHandler = (req, res, next) => {
         const isValid = bcryptjs.compareSync(password, loggedUser.password);
         if (!isValid) {
             return res.status(401).json({
+                ok: false,
                 msg: `The current password does not match`,
             });
         }
-    } else return res.status(400).json({ msg: "The password is required" });
+    } else
+        return res.status(400).json({
+            ok: false,
+            msg: "The password is required",
+        });
 
     next();
 };
