@@ -10,6 +10,13 @@ type JWTValidatorHandler = RequestHandler<
     { uid: string; loggedUser: DocumentUser },
     object
 >;
+/**
+ * Check if the JWT is valid and if the user exists and is active, then add the user to the request body
+ * @param req
+ * @param res
+ * @param next
+ * @constructor
+ */
 export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
     const token = req.header("X-Auth");
 

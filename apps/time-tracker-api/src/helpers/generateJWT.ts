@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
 
-export const generateJWT = (uid: string) =>
+/**
+ * Generate a JWT token with the given uid. If remember is true, the token will expire in 30 days, otherwise it will expire in 12 hours.
+ * @param uid
+ * @param remember
+ */
+export const generateJWT = (uid: string, remember?: boolean) =>
     new Promise<string>((resolve, reject) => {
         const payload = { uid };
 
@@ -8,7 +13,7 @@ export const generateJWT = (uid: string) =>
             payload,
             process.env.JWT_KEY ?? "default_key",
             {
-                expiresIn: "12h",
+                expiresIn: remember ? "30 days" : "12h",
             },
             (err, token) => {
                 if (token) {

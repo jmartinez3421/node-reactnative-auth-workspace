@@ -7,6 +7,12 @@ import { cryptPassword } from "@/helpers/cryptPassword";
 import { generateJWT } from "@/helpers/generateJWT";
 
 type GetUserHandler = RequestHandler<object, ResponseType<User>, { loggedUser: DocumentUser }, object>;
+/**
+ * Get the user information from the request body
+ * @param req
+ * @param res
+ * @constructor
+ */
 const GetUser: GetUserHandler = async (req, res) => {
     const { loggedUser } = req.body;
     try {
@@ -34,6 +40,12 @@ type CreateUserHandler = RequestHandler<
     },
     object
 >;
+/**
+ * Create a new user in the database with the information from the request body and return a JWT
+ * @param req
+ * @param res
+ * @constructor
+ */
 const CreateUser: CreateUserHandler = async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -74,6 +86,12 @@ type UpdateUserHandler = RequestHandler<
     },
     object
 >;
+/**
+ * Update the user information in the database with the information from the request body
+ * @param req
+ * @param res
+ * @constructor
+ */
 const UpdateUser: UpdateUserHandler = async (req, res) => {
     const { loggedUser, name, newPassword } = req.body;
     try {
@@ -96,6 +114,12 @@ const UpdateUser: UpdateUserHandler = async (req, res) => {
 };
 
 type DeleteUserHandler = RequestHandler<object, ResponseType<{ msg: string }>, { loggedUser: DocumentUser }, object>;
+/**
+ * Sets the status of the user to false
+ * @param req
+ * @param res
+ * @constructor
+ */
 const DeleteUser: DeleteUserHandler = async (req, res) => {
     const { loggedUser } = req.body;
     try {

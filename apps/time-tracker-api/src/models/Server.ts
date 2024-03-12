@@ -4,6 +4,9 @@ import { dbConnection } from "@/db/config";
 import { userRouter } from "@/routes/user";
 import { authRouter } from "@/routes/auth";
 
+/**
+ * Server class - Define the properties and methods of the server
+ */
 export class Server {
     private app: Express;
 

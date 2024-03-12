@@ -11,8 +11,23 @@ interface SendEmailProps {
     onError: (error: Error) => void;
     onSuccess: () => void;
 }
+
+/**
+ * Sends an email using nodemailer and handlebars.<br/>
+ * The email is sent to the specified email address with the specified subject and payload.<br/>
+ * The template is the path to the handlebars template.<br/>
+ * If an error occurs, the onError function is called with the error as an argument.<br/>
+ * If the email is sent successfully, the onSuccess function is called.
+ * @param email
+ * @param subject
+ * @param payload
+ * @param template
+ * @param onError
+ * @param onSuccess
+ */
 export const sendEmail = async ({ email, subject, payload, template, onError, onSuccess }: SendEmailProps) => {
     try {
+        // Create a transporter to send the email with the specified credentials
         const transporter = nodemailer.createTransport({
             service: "gmail",
             host: "smtp.gmail.com",
@@ -24,6 +39,7 @@ export const sendEmail = async ({ email, subject, payload, template, onError, on
             },
         });
 
+        // Compile the handlebars template with the specified payload
         const source = fs.readFileSync(path.join(__dirname, template), "utf8");
         const compiledTemplate = handlebars.compile(source);
         const options = () => ({
@@ -34,7 +50,7 @@ export const sendEmail = async ({ email, subject, payload, template, onError, on
         });
 
         // Send email
-        transporter.sendMail(options(), (error, info) => {
+        transporter.sendMail(options(), (error) => {
             if (error) {
                 onError(error);
             } else {

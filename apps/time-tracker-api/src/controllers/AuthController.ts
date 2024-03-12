@@ -14,6 +14,12 @@ type LoginHandler = RequestHandler<
     { email: string; password: string },
     object
 >;
+/**
+ * Checks if the user exists and the password is correct. If so, it returns a JWT token.
+ * @param req
+ * @param res
+ * @constructor
+ */
 const Login: LoginHandler = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -46,6 +52,13 @@ const Login: LoginHandler = async (req, res) => {
 };
 
 type RenewHandler = RequestHandler<object, ResponseType<{ token: string }>, { loggedUser: DocumentUser }, object>;
+
+/**
+ * Generates a new JWT token for the user.
+ * @param req
+ * @param res
+ * @constructor
+ */
 const Renew: RenewHandler = async (req, res) => {
     const { loggedUser } = req.body;
     try {
@@ -64,6 +77,12 @@ const Renew: RenewHandler = async (req, res) => {
 };
 
 type RequestNewPasswordHandler = RequestHandler<object, ResponseType<{ msg: string }>, { email: string }, object>;
+/**
+ * Checks if there is some user with the given email. If so, it sends an email with a token to reset the password.
+ * @param req
+ * @param res
+ * @constructor
+ */
 const RequestNewPassword: RequestNewPasswordHandler = async (req, res) => {
     const { email } = req.body;
     try {
@@ -116,6 +135,12 @@ type ResetPasswordHandler = RequestHandler<
     { email: string; token: string; password: string },
     object
 >;
+/**
+ * Checks if the user exists and the token is valid. If so, it updates the password.
+ * @param req
+ * @param res
+ * @constructor
+ */
 const ResetPassword: ResetPasswordHandler = async (req, res) => {
     const { email, token, password } = req.body;
     try {
