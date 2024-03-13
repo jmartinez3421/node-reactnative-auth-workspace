@@ -12,6 +12,8 @@ This is a boilerplate for an authentication API using Node.js, Express, and Mong
 ## Getting Started
 First of all you need to install the dependencies by running the following command:
 
+> Remember to rename the package.json name field to your project name
+
 ```bash
 yarn install
 ```
