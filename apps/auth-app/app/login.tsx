@@ -3,6 +3,8 @@ import { Button, View, Text, TextInput, Switch, Alert } from "react-native";
 import { useSession } from "@/contexts/AuthContext";
 import { router } from "expo-router";
 import { StyleSheet } from "react-native";
+import { Loading } from "@/components/Layout/Loading";
+import { SwitchRow } from "@/components/Form/Switch/SwitchRow";
 
 const Login = () => {
     const { signIn } = useSession();
@@ -13,13 +15,16 @@ const Login = () => {
         remember: false,
     });
 
-    const handleSignIn = () => {
-        console.log(process.env.EXPO_PUBLIC_API_URL)
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    const handleSignIn = async () => {
         if (!formData.email || !formData.password) {
             Alert.alert("Please fill in all fields");
             return;
         }
-        signIn(formData.email, formData.password, formData.remember);
+        setIsLoading(true);
+        await signIn(formData.email, formData.password, formData.remember);
+        setIsLoading(false);
         router.replace("/");
     };
 
@@ -40,9 +45,9 @@ const Login = () => {
                 value={formData.password}
                 onChangeText={(password) => setFormData({ ...formData, password })}
             />
-            <Text>Remember me</Text>
-            <Switch value={formData.remember} onValueChange={(remember) => setFormData({ ...formData, remember })} />
+            <SwitchRow title="Remember me" value={formData.remember} onChange={(remember) => setFormData({ ...formData, remember })} />
             <Button onPress={handleSignIn} title="sign in" />
+            {isLoading && <Loading />}
         </View>
     );
 };

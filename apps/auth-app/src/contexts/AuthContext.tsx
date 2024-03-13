@@ -8,12 +8,12 @@ import { ErrorResponse } from "@/api/APIClient";
 import { Alert } from "react-native";
 
 const AuthContext = React.createContext<{
-    signIn: (email: string, password: string, remember?: boolean) => void;
+    signIn: (email: string, password: string, remember?: boolean) => Promise<void>;
     signOut: () => void;
     session?: string | null;
     isLoading: boolean;
 }>({
-    signIn: () => null,
+    signIn: () => Promise.resolve(),
     signOut: () => null,
     session: undefined,
     isLoading: false,
@@ -45,23 +45,23 @@ export function SessionProvider(props: React.PropsWithChildren) {
             });
     }, []);
 
-    const signIn = (email: string, password: string, remember?: boolean) => {
-        authService
-            .login({
+    const signIn = async (email: string, password: string, remember?: boolean) => {
+        try {
+            const response = await authService.login({
                 email,
                 password,
                 remember,
-            })
-            .then((res) => {
-                const { token } = res.data.data;
-                setSession(token);
-                router.replace("/");
-            })
-            .catch((err: AxiosError<ErrorResponse>) => {
-                if (err.response && err.response.data) {
-                    Alert.alert(err.response.data.msg);
-                }
             });
+
+            const { token } = response.data.data;
+            setSession(token);
+            router.replace("/");
+        } catch (err) {
+            const error = err as AxiosError<ErrorResponse>;
+            if (error.response && error.response.data) {
+                Alert.alert(error.response.data.msg);
+            }
+        }
     };
 
     const signOut = () => {
