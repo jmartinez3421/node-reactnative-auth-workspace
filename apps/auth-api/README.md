@@ -41,9 +41,8 @@ If any of the routes returns an error, the response will be:
 ```typescript
 interface ErrorResponse {
     ok: false;
-    error: {
-        msg: string;
-    }
+    msg: string;
+    errors?: string[];
 }
 ```
 
