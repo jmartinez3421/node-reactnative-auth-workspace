@@ -47,7 +47,9 @@ export interface LoginRequest {
 
 export interface LoginResponse extends SuccessResponse<{ token: string }> {}
 
-export interface RenewResponse extends SuccessResponse<{ token: string }> {}
+export interface RenewTokenResponse extends SuccessResponse<{ token: string }> {}
+
+export interface ForgotPasswordResponse extends SuccessResponse<{ msg: string }> {}
 
 export interface ForgotPasswordRequest {
     email: string;
@@ -93,11 +95,11 @@ export class AuthService {
     }
 
     public renew() {
-        return this.api.get<RenewResponse>(`${this.baseURL}/renew`);
+        return this.api.get<RenewTokenResponse>(`${this.baseURL}/renew`);
     }
 
     public forgotPassword(data: ForgotPasswordRequest) {
-        return this.api.post(`${this.baseURL}/forgot-password`, data);
+        return this.api.post<ForgotPasswordResponse>(`${this.baseURL}/forgot-password`, data);
     }
 
     public resetPassword(data: ResetPasswordRequest) {

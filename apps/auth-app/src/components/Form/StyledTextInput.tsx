@@ -1,8 +1,17 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-export const StyledTextInput = (props: React.ComponentProps<typeof TextInput>) => (
-    <TextInput style={[styles.input, props.style]} placeholderTextColor="#303030" {...props} />
+interface StyledTextInputProps extends React.ComponentProps<typeof TextInput> {
+    hasError?: boolean;
+}
+
+export const StyledTextInput = ({ style: propsStyles, hasError, ...props }: StyledTextInputProps) => (
+    <TextInput
+        autoCorrect={false}
+        style={[styles.input, propsStyles, hasError && styles.error]}
+        placeholderTextColor="#303030"
+        {...props}
+    />
 );
 
 const styles = StyleSheet.create({
@@ -15,5 +24,9 @@ const styles = StyleSheet.create({
         borderColor: "#303030",
         color: "#303030",
         width: "100%",
+    },
+    error: {
+        borderColor: "red",
+        color: "red",
     },
 });

@@ -11,7 +11,11 @@ interface StyledButtonProps {
 export const StyledButton = ({ title, onPress, disabled, sx }: StyledButtonProps) => {
     return (
         <View style={sx}>
-            <TouchableOpacity style={styles.button} onPress={onPress} disabled={disabled}>
+            <TouchableOpacity
+                style={[styles.button, disabled && styles.buttonDisabled]}
+                onPress={onPress}
+                disabled={disabled}
+            >
                 <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>
         </View>
@@ -32,6 +36,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+    },
+    buttonDisabled: {
+        backgroundColor: "#666",
     },
     text: {
         color: "#fff",

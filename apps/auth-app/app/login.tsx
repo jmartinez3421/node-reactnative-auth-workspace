@@ -1,12 +1,13 @@
 import React from "react";
 import { View, Text, Alert } from "react-native";
 import { useSession } from "@/contexts/AuthContext";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { StyleSheet } from "react-native";
 import { Loading } from "@/components/Layout/Loading";
 import { SwitchRow } from "@/components/Form/Switch/SwitchRow";
 import { StyledTextInput } from "@/components/Form/StyledTextInput";
 import { StyledButton } from "@/components/Form/StyledButton";
+import { AuthStyles } from "@/styles/AuthCommonStyles";
 
 const Login = () => {
     const { signIn } = useSession();
@@ -31,18 +32,18 @@ const Login = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <View style={styles.form}>
+        <View style={AuthStyles.container}>
+            <Text style={AuthStyles.title}>Login</Text>
+            <View style={AuthStyles.form}>
                 <StyledTextInput
-                    placeholder={"email"}
+                    placeholder={"Email"}
                     autoCapitalize="none"
                     value={formData.email}
                     onChangeText={(email) => setFormData({ ...formData, email })}
                     editable={!isLoading}
                 />
                 <StyledTextInput
-                    placeholder={"password"}
+                    placeholder={"Password"}
                     autoCapitalize="none"
                     secureTextEntry
                     value={formData.password}
@@ -56,7 +57,10 @@ const Login = () => {
                     sx={styles.switch}
                     disabled={isLoading}
                 />
-                <StyledButton onPress={handleSignIn} title="Login" disabled={isLoading} sx={styles.button} />
+                <Link href="/forgot-password" style={AuthStyles.link}>
+                    Forgot your password?
+                </Link>
+                <StyledButton onPress={handleSignIn} title="Login" disabled={isLoading} sx={AuthStyles.button} />
             </View>
             {isLoading && <Loading />}
         </View>
@@ -64,28 +68,8 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        paddingHorizontal: 20,
-    },
-    title: {
-        fontSize: 25,
-        fontWeight: "bold",
-        marginBottom: 20,
-    },
-    form: {
-        width: "100%",
-        rowGap: 5,
-    },
     switch: {
         alignSelf: "flex-start",
-    },
-    button: {
-        marginTop: 20,
-        alignSelf: "center",
-        width: "50%",
     },
 });
 
