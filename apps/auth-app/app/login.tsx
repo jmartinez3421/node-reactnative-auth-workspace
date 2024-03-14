@@ -1,10 +1,12 @@
 import React from "react";
-import { Button, View, Text, TextInput, Switch, Alert } from "react-native";
+import { View, Text, Alert } from "react-native";
 import { useSession } from "@/contexts/AuthContext";
 import { router } from "expo-router";
 import { StyleSheet } from "react-native";
 import { Loading } from "@/components/Layout/Loading";
 import { SwitchRow } from "@/components/Form/Switch/SwitchRow";
+import { StyledTextInput } from "@/components/Form/StyledTextInput";
+import { StyledButton } from "@/components/Form/StyledButton";
 
 const Login = () => {
     const { signIn } = useSession();
@@ -30,23 +32,32 @@ const Login = () => {
 
     return (
         <View style={styles.container}>
-            <TextInput
-                placeholder={"email"}
-                autoCapitalize="none"
-                style={styles.input}
-                value={formData.email}
-                onChangeText={(email) => setFormData({ ...formData, email })}
-            />
-            <TextInput
-                placeholder={"password"}
-                autoCapitalize="none"
-                secureTextEntry
-                style={styles.input}
-                value={formData.password}
-                onChangeText={(password) => setFormData({ ...formData, password })}
-            />
-            <SwitchRow title="Remember me" value={formData.remember} onChange={(remember) => setFormData({ ...formData, remember })} />
-            <Button onPress={handleSignIn} title="sign in" />
+            <Text style={styles.title}>Login</Text>
+            <View style={styles.form}>
+                <StyledTextInput
+                    placeholder={"email"}
+                    autoCapitalize="none"
+                    value={formData.email}
+                    onChangeText={(email) => setFormData({ ...formData, email })}
+                    editable={!isLoading}
+                />
+                <StyledTextInput
+                    placeholder={"password"}
+                    autoCapitalize="none"
+                    secureTextEntry
+                    value={formData.password}
+                    onChangeText={(password) => setFormData({ ...formData, password })}
+                    editable={!isLoading}
+                />
+                <SwitchRow
+                    title="Remember me"
+                    value={formData.remember}
+                    onChange={(remember) => setFormData({ ...formData, remember })}
+                    sx={styles.switch}
+                    disabled={isLoading}
+                />
+                <StyledButton onPress={handleSignIn} title="Login" disabled={isLoading} sx={styles.button} />
+            </View>
             {isLoading && <Loading />}
         </View>
     );
@@ -60,15 +71,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     title: {
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: "bold",
+        marginBottom: 20,
     },
-    input: {
-        height: 40,
-        margin: 12,
+    form: {
         width: "100%",
-        borderWidth: 1,
-    }
+        rowGap: 5,
+    },
+    switch: {
+        alignSelf: "flex-start",
+    },
+    button: {
+        marginTop: 20,
+        alignSelf: "center",
+        width: "50%",
+    },
 });
 
 export default Login;

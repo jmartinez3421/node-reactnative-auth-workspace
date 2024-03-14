@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { CustomSwitch } from "./CustomSwitch";
 import React from "react";
 
@@ -6,14 +6,14 @@ type SwitchRowProps = {
     title: string;
     value: boolean;
     onChange: (value: boolean) => void;
+    sx?: StyleProp<ViewStyle>;
+    disabled?: boolean;
 };
-export const SwitchRow = ({ title, value, onChange }: SwitchRowProps) => {
+export const SwitchRow = ({ title, value, onChange, sx, disabled }: SwitchRowProps) => {
     return (
-        <View style={styles.switchRow}>
-            <CustomSwitch isOn={value} onChange={onChange} />
-            <Text style={[styles.switchText, !value && styles.disabledSwitchText]}>
-                {title}
-            </Text>
+        <View style={[styles.switchRow, sx]}>
+            <CustomSwitch isOn={value} onChange={onChange} disabled={disabled} />
+            <Text style={[styles.switchText, !value && styles.disabledSwitchText]}>{title}</Text>
         </View>
     );
 };
@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
         columnGap: 10,
     },
     switchText: {
-        fontSize: 25,
+        fontSize: 18,
     },
     disabledSwitchText: {
-        fontSize: 25,
+        fontSize: 18,
         color: "grey",
     },
 });

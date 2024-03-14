@@ -4,9 +4,10 @@ import { Platform, Switch } from "react-native";
 type Props = {
     isOn: boolean;
     onChange?: (value: boolean) => void;
+    disabled?: boolean;
 };
 
-export const CustomSwitch = ({ isOn, onChange }: Props) => {
+export const CustomSwitch = ({ isOn, onChange, disabled }: Props) => {
     const [isEnabled, setIsEnabled] = React.useState(isOn);
     const toggleSwitch = () => {
         setIsEnabled(!isEnabled);
@@ -19,6 +20,7 @@ export const CustomSwitch = ({ isOn, onChange }: Props) => {
             thumbColor={Platform.OS === "android" ? "blue" : ""}
             onValueChange={toggleSwitch}
             value={isEnabled}
+            disabled={disabled}
         />
     );
 };
