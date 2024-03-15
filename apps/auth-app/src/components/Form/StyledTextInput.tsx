@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-interface StyledTextInputProps extends React.ComponentProps<typeof TextInput> {
+export interface StyledTextInputProps extends React.ComponentProps<typeof TextInput> {
     hasError?: boolean;
 }
 

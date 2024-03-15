@@ -1,8 +1,19 @@
 import * as SecureStore from "expo-secure-store";
 import axios, { AxiosRequestConfig } from "axios";
+import Constants from "expo-constants";
+
+const host = Constants.expoGoConfig?.debuggerHost?.split(":")?.[0];
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "";
+
+export const baseURL =
+    host &&
+    (host.startsWith("192.168") || host.startsWith("10.") || host.startsWith("172.")) &&
+    (API_URL.indexOf("localhost") > -1 || API_URL.indexOf("127.0.0.1") > -1)
+        ? "http://" + host + ":" + (API_URL.split(":").pop() || "")
+        : API_URL;
 
 const api = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_API_URL ?? "",
+    baseURL,
     headers: {
         "Content-Type": "application/json",
     },

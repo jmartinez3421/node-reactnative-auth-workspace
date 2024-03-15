@@ -2,13 +2,13 @@ import React from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { CustomSwitch } from "./CustomSwitch";
 
-type SwitchRowProps = {
+export interface SwitchRowProps {
     title: string;
     value: boolean;
     onChange: (value: boolean) => void;
     sx?: StyleProp<ViewStyle>;
     disabled?: boolean;
-};
+}
 export const SwitchRow = ({ title, value, onChange, sx, disabled }: SwitchRowProps) => {
     return (
         <View style={[styles.switchRow, sx]}>
