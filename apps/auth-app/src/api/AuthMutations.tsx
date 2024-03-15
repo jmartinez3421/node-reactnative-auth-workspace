@@ -1,7 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "@/api/services";
+import { authService, userService } from "@/api/services";
 import { Alert } from "react-native";
 import {
+    CreateUserRequest,
+    CreateUserResponse,
     ErrorResponse,
     ForgotPasswordRequest,
     ForgotPasswordResponse,
@@ -48,6 +50,16 @@ export const useLoginMutation = () => {
         mutationFn: (data) => authService.login(data),
         onError: (error) => {
             Alert.alert("Error", error.response?.data.msg || "Error logging in");
+        },
+    });
+};
+
+export const useRegisterMutation = () => {
+    return useMutation<CreateUserResponse, AxiosError<ErrorResponse>, CreateUserRequest, CreateUserRequest>({
+        mutationKey: ["register"],
+        mutationFn: (data) => userService.createUser(data),
+        onError: (error) => {
+            Alert.alert("Error", error.response?.data.msg || "Error registering");
         },
     });
 };

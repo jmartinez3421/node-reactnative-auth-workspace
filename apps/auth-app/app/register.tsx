@@ -1,43 +1,47 @@
 import React from "react";
-import { View, Text, Alert } from "react-native";
-import { useSession } from "@/contexts/AuthContext";
-import { Link, router } from "expo-router";
-import { StyleSheet } from "react-native";
-import { Loading } from "@/components/Layout/Loading";
-import { SwitchRow } from "@/components/Form/Switch/SwitchRow";
-import { StyledTextInput } from "@/components/Form/StyledTextInput";
-import { StyledButton } from "@/components/Form/StyledButton";
 import { AuthStyles } from "@/styles/AuthCommonStyles";
-import { useLoginMutation } from "@/api/AuthMutations";
+import { Alert, Text, View } from "react-native";
+import { StyledTextInput } from "@/components/Form/StyledTextInput";
+import { Link } from "expo-router";
+import { StyledButton } from "@/components/Form/StyledButton";
+import { Loading } from "@/components/Layout/Loading";
+import { useRegisterMutation } from "@/api/AuthMutations";
+import { useSession } from "@/contexts/AuthContext";
 
-const Login = () => {
+const Register = () => {
     const { login } = useSession();
 
     const [formData, setFormData] = React.useState({
+        name: "",
         email: "",
         password: "",
-        remember: false,
     });
 
-    const mutation = useLoginMutation();
+    const mutation = useRegisterMutation();
 
-    const handleSignIn = async () => {
-        if (!formData.email || !formData.password) {
+    const handleRegister = () => {
+        if (!formData.email || !formData.password || !formData.name) {
             Alert.alert("Please fill in all fields");
             return;
         }
         mutation.mutate(formData, {
             onSuccess: ({ data }) => {
                 login(data.token);
-                router.replace("/");
             },
         });
     };
 
     return (
         <View style={AuthStyles.container}>
-            <Text style={AuthStyles.title}>Login</Text>
+            <Text style={AuthStyles.title}>Register</Text>
             <View style={AuthStyles.form}>
+                <StyledTextInput
+                    placeholder={"Name"}
+                    autoCapitalize="sentences"
+                    value={formData.name}
+                    onChangeText={(name) => setFormData({ ...formData, name })}
+                    editable={!mutation.isPending}
+                />
                 <StyledTextInput
                     placeholder={"Email"}
                     keyboardType="email-address"
@@ -52,36 +56,20 @@ const Login = () => {
                     onChangeText={(password) => setFormData({ ...formData, password })}
                     editable={!mutation.isPending}
                 />
-                <SwitchRow
-                    title="Remember me"
-                    value={formData.remember}
-                    onChange={(remember) => setFormData({ ...formData, remember })}
-                    sx={styles.switch}
-                    disabled={mutation.isPending}
-                />
-                <Link href="/forgot-password" style={AuthStyles.link}>
-                    Forgot your password?
-                </Link>
                 <StyledButton
-                    onPress={handleSignIn}
-                    title="Login"
+                    onPress={handleRegister}
+                    title="Register"
                     disabled={mutation.isPending || !formData.email || !formData.password}
                     sx={AuthStyles.button}
                 />
             </View>
             <View style={AuthStyles.separator} />
-            <Link href="/register" style={AuthStyles.link}>
-                Don't have an account?
+            <Link href="/login" style={AuthStyles.link}>
+                Already have an account?
             </Link>
             {mutation.isPending && <Loading />}
         </View>
     );
 };
 
-const styles = StyleSheet.create({
-    switch: {
-        alignSelf: "flex-start",
-    },
-});
-
-export default Login;
+export default Register;
