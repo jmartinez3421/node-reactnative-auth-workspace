@@ -1,5 +1,5 @@
-import { Link, useLocalSearchParams } from "expo-router";
 import React from "react";
+import { Link, useLocalSearchParams } from "expo-router";
 import { View, Text, Alert, StyleSheet } from "react-native";
 import { AuthStyles } from "@/styles/AuthCommonStyles";
 import { StyledTextInput } from "@/components/Form/StyledTextInput";
@@ -7,7 +7,7 @@ import { StyledButton } from "@/components/Form/StyledButton";
 import { useResetPasswordMutation } from "@/api/AuthMutations";
 import { Loading } from "@/components/Layout/Loading";
 
-const PasswordToken = () => {
+const RememberPassword = () => {
     const { email } = useLocalSearchParams<{ email: string }>();
 
     const [formData, setFormData] = React.useState({
@@ -53,7 +53,7 @@ const PasswordToken = () => {
                 {!email && (
                     <StyledTextInput
                         placeholder="Email"
-                        autoCapitalize="none"
+                        keyboardType="email-address"
                         value={email}
                         onChangeText={(value) => setFormData({ ...formData, email: value })}
                         editable={!mutation.isPending}
@@ -61,7 +61,6 @@ const PasswordToken = () => {
                 )}
                 <StyledTextInput
                     placeholder={"Password"}
-                    autoCapitalize="none"
                     value={formData.password}
                     onChangeText={(value) => setFormData({ ...formData, password: value })}
                     secureTextEntry
@@ -69,7 +68,6 @@ const PasswordToken = () => {
                 />
                 <StyledTextInput
                     placeholder={"Repeat password"}
-                    autoCapitalize="none"
                     value={formData.repeatPassword}
                     onChangeText={(value) => setFormData({ ...formData, repeatPassword: value })}
                     secureTextEntry
@@ -78,7 +76,6 @@ const PasswordToken = () => {
                 />
                 <StyledTextInput
                     placeholder="Code"
-                    autoCapitalize="none"
                     value={formData.token}
                     onChangeText={(value) => setFormData({ ...formData, token: value })}
                     style={styles.codeInput}
@@ -111,4 +108,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PasswordToken;
+export default RememberPassword;

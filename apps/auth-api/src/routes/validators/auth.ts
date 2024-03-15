@@ -1,23 +1,20 @@
 import { check } from "express-validator";
-import { CheckErrors } from "@/middlewares/CheckErrors";
-import { JWTValidator } from "@/middlewares/JwtValidator";
+import ValidatorsBuilder from "@/routes/validators/ValidatorsBuilder";
 
-const Login = [
+const Login = ValidatorsBuilder.publicRoute([
     check("email", "Email is required").notEmpty(),
     check("password", "Password is required").notEmpty(),
-    CheckErrors,
-];
+]);
 
-const Renew = JWTValidator;
+const Renew = ValidatorsBuilder.privateRoute([]);
 
-const ForgotPassword = [check("email", "Email is required").notEmpty(), CheckErrors];
+const ForgotPassword = ValidatorsBuilder.publicRoute([check("email", "Email is required").notEmpty()]);
 
-const ResetPassword = [
+const ResetPassword = ValidatorsBuilder.publicRoute([
     check("email", "Email is required").notEmpty(),
     check("token", "Token is required").notEmpty(),
     check("password", "Password is required").notEmpty(),
-    CheckErrors,
-];
+]);
 
 export default {
     Login,

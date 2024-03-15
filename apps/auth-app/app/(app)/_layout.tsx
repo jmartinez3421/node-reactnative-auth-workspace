@@ -1,13 +1,13 @@
-import { Redirect, Stack } from 'expo-router';
+import React from "react";
+import { Redirect, Stack } from "expo-router";
 import { useSession } from "@/contexts/AuthContext";
-import { Text } from 'react-native';
-
+import { Loading } from "@/components/Layout/Loading";
 
 const AuthLayout = () => {
     const { session, isLoading } = useSession();
 
     if (isLoading) {
-        return <Text>Loading...</Text>;
+        return <Loading />;
     }
 
     if (!session) {
@@ -15,7 +15,6 @@ const AuthLayout = () => {
     }
 
     return <Stack />;
-}
-
+};
 
 export default AuthLayout;

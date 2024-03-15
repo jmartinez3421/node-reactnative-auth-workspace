@@ -8,7 +8,8 @@ interface StyledTextInputProps extends React.ComponentProps<typeof TextInput> {
 export const StyledTextInput = ({ style: propsStyles, hasError, ...props }: StyledTextInputProps) => (
     <TextInput
         autoCorrect={false}
-        style={[styles.input, propsStyles, hasError && styles.error]}
+        autoCapitalize="none"
+        style={[styles.input, propsStyles, hasError && styles.error, !props.editable && styles.disabled]}
         placeholderTextColor="#303030"
         {...props}
     />
@@ -28,5 +29,10 @@ const styles = StyleSheet.create({
     error: {
         borderColor: "red",
         color: "red",
+    },
+    disabled: {
+        backgroundColor: "#f2f2f2",
+        color: "#a0a0a0",
+        borderColor: "#a0a0a0",
     },
 });

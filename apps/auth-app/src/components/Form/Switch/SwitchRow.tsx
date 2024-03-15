@@ -1,6 +1,6 @@
+import React from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { CustomSwitch } from "./CustomSwitch";
-import React from "react";
 
 type SwitchRowProps = {
     title: string;

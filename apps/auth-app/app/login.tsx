@@ -8,27 +8,30 @@ import { SwitchRow } from "@/components/Form/Switch/SwitchRow";
 import { StyledTextInput } from "@/components/Form/StyledTextInput";
 import { StyledButton } from "@/components/Form/StyledButton";
 import { AuthStyles } from "@/styles/AuthCommonStyles";
+import { useLoginMutation } from "@/api/AuthMutations";
 
 const Login = () => {
-    const { signIn } = useSession();
+    const { login } = useSession();
 
     const [formData, setFormData] = React.useState({
-        email: "jmartinezg.fp@gmail.com",
-        password: "Patata333!",
+        email: "",
+        password: "",
         remember: false,
     });
 
-    const [isLoading, setIsLoading] = React.useState(false);
+    const mutation = useLoginMutation();
 
     const handleSignIn = async () => {
         if (!formData.email || !formData.password) {
             Alert.alert("Please fill in all fields");
             return;
         }
-        setIsLoading(true);
-        await signIn(formData.email, formData.password, formData.remember);
-        setIsLoading(false);
-        router.replace("/");
+        mutation.mutate(formData, {
+            onSuccess: ({ data }) => {
+                login(data.token);
+                router.replace("/");
+            },
+        });
     };
 
     return (
@@ -37,32 +40,36 @@ const Login = () => {
             <View style={AuthStyles.form}>
                 <StyledTextInput
                     placeholder={"Email"}
-                    autoCapitalize="none"
+                    keyboardType="email-address"
                     value={formData.email}
                     onChangeText={(email) => setFormData({ ...formData, email })}
-                    editable={!isLoading}
+                    editable={!mutation.isPending}
                 />
                 <StyledTextInput
                     placeholder={"Password"}
-                    autoCapitalize="none"
                     secureTextEntry
                     value={formData.password}
                     onChangeText={(password) => setFormData({ ...formData, password })}
-                    editable={!isLoading}
+                    editable={!mutation.isPending}
                 />
                 <SwitchRow
                     title="Remember me"
                     value={formData.remember}
                     onChange={(remember) => setFormData({ ...formData, remember })}
                     sx={styles.switch}
-                    disabled={isLoading}
+                    disabled={mutation.isPending}
                 />
                 <Link href="/forgot-password" style={AuthStyles.link}>
                     Forgot your password?
                 </Link>
-                <StyledButton onPress={handleSignIn} title="Login" disabled={isLoading} sx={AuthStyles.button} />
+                <StyledButton
+                    onPress={handleSignIn}
+                    title="Login"
+                    disabled={mutation.isPending || !formData.email || !formData.password}
+                    sx={AuthStyles.button}
+                />
             </View>
-            {isLoading && <Loading />}
+            {mutation.isPending && <Loading />}
         </View>
     );
 };

@@ -1,18 +1,15 @@
-import { Text, View } from 'react-native';
+import React from "react";
+import { View } from "react-native";
 import { useSession } from "@/contexts/AuthContext";
+import { StyledButton } from "@/components/Form/StyledButton";
 
-
-export default function Index() {
-    const { signOut } = useSession();
+const Index = () => {
+    const { logout } = useSession();
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text
-                onPress={() => {
-                    // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
-                    signOut();
-                }}>
-                Sign Out
-            </Text>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <StyledButton title="Logout" onPress={logout} />
         </View>
     );
-}
+};
+
+export default Index;

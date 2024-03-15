@@ -1,5 +1,5 @@
 import * as SecureStore from "expo-secure-store";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const api = axios.create({
     baseURL: process.env.EXPO_PUBLIC_API_URL ?? "",
@@ -15,5 +15,19 @@ api.interceptors.request.use(async (config) => {
     }
     return config;
 });
+
+api.interceptors.response.use((response) => response.data);
+
+declare module "axios" {
+    export interface AxiosInstance {
+        request<T extends object>(config: AxiosRequestConfig): Promise<T>;
+        get<T extends object>(url: string, config?: AxiosRequestConfig): Promise<T>;
+        delete<T extends object>(url: string, config?: AxiosRequestConfig): Promise<T>;
+        head<T extends object>(url: string, config?: AxiosRequestConfig): Promise<T>;
+        post<T extends object>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+        put<T extends object>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+        patch<T extends object>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+    }
+}
 
 export default api;
