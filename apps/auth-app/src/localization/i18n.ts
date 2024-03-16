@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 import en from "./en";
 import es from "./es";
 import { getLocales } from "expo-localization";
+import * as SecureStore from "expo-secure-store";
 
 // List of translation resources
 const resources = {
@@ -10,8 +11,7 @@ const resources = {
     es,
 };
 
-const validLanguages = ["en", "es"];
-
+export const validLanguages = ["en", "es"];
 const deviceLanguage = getLocales()[0].languageCode ?? "";
 
 i18n.use(initReactI18next).init({
@@ -22,6 +22,12 @@ i18n.use(initReactI18next).init({
     interpolation: {
         escapeValue: false,
     },
+});
+
+SecureStore.getItemAsync("language").then((value) => {
+    if (value && validLanguages.includes(value)) {
+        i18n.changeLanguage(value);
+    }
 });
 
 export default i18n;

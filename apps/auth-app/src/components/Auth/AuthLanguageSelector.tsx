@@ -3,13 +3,20 @@ import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledButton } from "@/components/Form/StyledButton";
+import { useStorageState } from "@/hooks/useStorageState";
+import { validLanguages } from "@/localization/i18n";
 
 export const AuthLanguageSelector = () => {
     const { i18n } = useTranslation();
     const [language, setLanguage] = useState(i18n.language);
+    const [_, saveLanguage] = useStorageState("language");
+
     const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
-        setLanguage(lng);
+        if (validLanguages.includes(lng)) {
+            i18n.changeLanguage(lng);
+            setLanguage(lng);
+            saveLanguage(lng);
+        }
     };
     return (
         <View style={styles.container}>
