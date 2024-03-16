@@ -23,7 +23,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
     if (!token) {
         return res.status(401).json({
             ok: false,
-            msg: `There isn't any token in the request`,
+            msg: "NoTokenProvided",
         });
     }
 
@@ -37,7 +37,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
         if (!loggedUser) {
             return res.status(404).json({
                 ok: false,
-                msg: "No user with this uid",
+                msg: "UserNotFound",
             });
         }
 
@@ -45,7 +45,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
         if (!loggedUser.status) {
             return res.status(400).json({
                 ok: false,
-                msg: "The user is inactive",
+                msg: "InactiveUser",
             });
         }
 
@@ -57,7 +57,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
         console.log(err);
         return res.status(401).json({
             ok: false,
-            msg: `The JWT is not valid`,
+            msg: `InvalidToken`,
         });
     }
 };

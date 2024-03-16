@@ -31,7 +31,7 @@ export const CheckPassword: CheckPasswordHandler = (req, res, next) => {
     } else
         return res.status(400).json({
             ok: false,
-            msg: "The password is required",
+            msg: "The PasswordRequired",
         });
 
     next();

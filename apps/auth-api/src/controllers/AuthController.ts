@@ -27,14 +27,14 @@ const Login: LoginHandler = async (req, res) => {
         if (!user || !user.status) {
             return res.status(404).json({
                 ok: false,
-                msg: "User not found",
+                msg: "UserNotFound",
             });
         }
         const validPassword = bcrypt.compareSync(password, user.password);
         if (!validPassword) {
             return res.status(401).json({
                 ok: false,
-                msg: "Invalid password",
+                msg: "InvalidPassword",
             });
         }
         const token = await generateJWT(user.id, remember);
@@ -46,7 +46,7 @@ const Login: LoginHandler = async (req, res) => {
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };
@@ -71,7 +71,7 @@ const Renew: RenewHandler = async (req, res) => {
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };
@@ -90,7 +90,7 @@ const RequestNewPassword: RequestNewPasswordHandler = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 ok: false,
-                msg: "User not found",
+                msg: "UserNotFound",
             });
         }
         const token = await TokenModel.findOne({ userId: user.id });
@@ -110,7 +110,7 @@ const RequestNewPassword: RequestNewPasswordHandler = async (req, res) => {
                 console.log(error);
                 return res.status(500).json({
                     ok: false,
-                    msg: "Internal server error",
+                    msg: "InternalError",
                 });
             },
             onSuccess: () => {
@@ -124,7 +124,7 @@ const RequestNewPassword: RequestNewPasswordHandler = async (req, res) => {
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };
@@ -148,21 +148,21 @@ const ResetPassword: ResetPasswordHandler = async (req, res) => {
         if (!user) {
             return res.status(404).json({
                 ok: false,
-                msg: "User not found",
+                msg: "UserNotFound",
             });
         }
         const passwordResetToken = await TokenModel.findOne({ userId: user.id });
         if (!passwordResetToken) {
             return res.status(401).json({
                 ok: false,
-                msg: "Invalid or expired password reset token",
+                msg: "InvalidResetToken",
             });
         }
         const isValid = await bcrypt.compare(token, passwordResetToken.token);
         if (!isValid) {
             return res.status(401).json({
                 ok: false,
-                msg: "Invalid or expired password reset token",
+                msg: "InvalidResetToken",
             });
         }
 
@@ -180,7 +180,7 @@ const ResetPassword: ResetPasswordHandler = async (req, res) => {
                 console.log(error);
                 return res.status(500).json({
                     ok: false,
-                    msg: "Internal server error",
+                    msg: "InternalError",
                 });
             },
             onSuccess: () => {
@@ -194,7 +194,7 @@ const ResetPassword: ResetPasswordHandler = async (req, res) => {
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };

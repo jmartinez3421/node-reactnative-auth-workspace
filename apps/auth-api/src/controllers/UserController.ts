@@ -25,7 +25,7 @@ const GetUser: GetUserHandler = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };
@@ -71,7 +71,7 @@ const CreateUser: CreateUserHandler = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };
@@ -108,7 +108,7 @@ const UpdateUser: UpdateUserHandler = async (req, res) => {
         console.log(error);
         return res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };
@@ -132,7 +132,7 @@ const DeleteUser: DeleteUserHandler = async (req, res) => {
         console.log(err);
         res.status(500).json({
             ok: false,
-            msg: "Internal server error",
+            msg: "InternalError",
         });
     }
 };

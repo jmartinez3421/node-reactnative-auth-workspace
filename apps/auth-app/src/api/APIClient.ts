@@ -65,6 +65,21 @@ export interface ResetPasswordRequest {
 
 export interface ResetPasswordResponse extends SuccessResponse<{ msg: string }> {}
 
+export const ValidationErrorCodes = [
+    "InvalidEmail",
+    "EmailRequired",
+    "InvalidPassword",
+    "PasswordRequired",
+    "NameRequired",
+    "TokenRequired",
+    "EmailAlreadyExists",
+    "NoTokenProvided",
+    "UserNotFound",
+    "InactiveUser",
+    "InvalidToken",
+    "InvalidResetToken",
+];
+
 export const showValidationErrorAlert = (errors: string[]) =>
     Alert.alert(i18n.t("common:InvalidData"), `- ${errors.join("\n\n- ")}`);
 
