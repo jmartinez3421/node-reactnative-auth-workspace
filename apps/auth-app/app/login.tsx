@@ -10,6 +10,7 @@ import { useLoginMutation } from "@/api/AuthMutations";
 import { useForm } from "react-hook-form";
 import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
 import { ControlledSwitchRow } from "@/components/Form/ControlledComponents/ControlledSwitchRow";
+import { EmailRegExp } from "@/utils/regExp";
 
 interface LoginFormProps {
     email: string;
@@ -20,11 +21,7 @@ interface LoginFormProps {
 const Login = () => {
     const { login } = useSession();
 
-    const {
-        control,
-        handleSubmit,
-        formState: { isValid },
-    } = useForm<LoginFormProps>({
+    const { control, handleSubmit } = useForm<LoginFormProps>({
         defaultValues: {
             email: "",
             password: "",
@@ -55,6 +52,7 @@ const Login = () => {
                     editable={!mutation.isPending}
                     rules={{
                         required: true,
+                        pattern: EmailRegExp,
                     }}
                 />
                 <ControlledTextInput
@@ -77,12 +75,7 @@ const Login = () => {
                 <Link href="/forgot-password" style={AuthStyles.link}>
                     Forgot your password?
                 </Link>
-                <StyledButton
-                    onPress={onSubmit}
-                    title="Login"
-                    disabled={mutation.isPending || !isValid}
-                    sx={AuthStyles.button}
-                />
+                <StyledButton onPress={onSubmit} title="Login" disabled={mutation.isPending} sx={AuthStyles.button} />
             </View>
             <View style={AuthStyles.separator} />
             <Link href="/register" style={AuthStyles.link}>

@@ -1,29 +1,24 @@
 import React from "react";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { AuthStyles } from "@/styles/AuthCommonStyles";
-import { StyledTextInput } from "@/components/Form/StyledTextInput";
 import { StyledButton } from "@/components/Form/StyledButton";
 import { useForgotPasswordMutation } from "@/api/AuthMutations";
 import { Loading } from "@/components/Layout/Loading";
 import { Link, router } from "expo-router";
+import { useForm } from "react-hook-form";
+import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
+import { EmailRegExp } from "@/utils/regExp";
 
 const ForgotPassword = () => {
-    const [email, setEmail] = React.useState("");
+    const { control, handleSubmit } = useForm<{ email: string }>({ defaultValues: { email: "" } });
 
     const mutation = useForgotPasswordMutation();
 
-    const handleSignIn = () => {
-        if (!email) {
-            Alert.alert("Insert your email");
-            return;
-        }
-        mutation.mutate(
-            { email },
-            {
-                onSuccess: () => router.navigate({ pathname: "/remember-password", params: { email } }),
-            }
-        );
-    };
+    const onSubmit = handleSubmit((formData) => {
+        mutation.mutate(formData, {
+            onSuccess: () => router.navigate({ pathname: "/remember-password", params: { email: formData.email } }),
+        });
+    });
 
     return (
         <View style={AuthStyles.container}>
@@ -32,19 +27,15 @@ const ForgotPassword = () => {
                 <Text style={AuthStyles.helper}>
                     Enter your email and we will send you a link to reset your password
                 </Text>
-                <StyledTextInput
+                <ControlledTextInput
+                    name="email"
+                    control={control}
+                    rules={{ required: true, pattern: EmailRegExp }}
                     placeholder="Email"
                     keyboardType="email-address"
-                    value={email}
-                    onChangeText={(value) => setEmail(value)}
                     editable={!mutation.isPending}
                 />
-                <StyledButton
-                    onPress={handleSignIn}
-                    title="Send"
-                    disabled={mutation.isPending || !email}
-                    sx={AuthStyles.button}
-                />
+                <StyledButton onPress={onSubmit} title="Send" disabled={mutation.isPending} sx={AuthStyles.button} />
             </View>
             <View style={AuthStyles.separator} />
             <Link href="/remember-password" style={AuthStyles.link}>

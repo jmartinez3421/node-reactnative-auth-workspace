@@ -8,6 +8,7 @@ import { useRegisterMutation } from "@/api/AuthMutations";
 import { useSession } from "@/contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
+import { EmailRegExp } from "@/utils/regExp";
 
 interface RegisterFormProps {
     name: string;
@@ -18,11 +19,7 @@ interface RegisterFormProps {
 const Register = () => {
     const { login } = useSession();
 
-    const {
-        control,
-        handleSubmit,
-        formState: { isValid },
-    } = useForm<RegisterFormProps>({
+    const { control, handleSubmit } = useForm<RegisterFormProps>({
         defaultValues: {
             name: "",
             email: "",
@@ -47,7 +44,7 @@ const Register = () => {
                 <ControlledTextInput
                     name="name"
                     control={control}
-                    rules={{ required: true }}
+                    rules={{ required: true, pattern: EmailRegExp }}
                     placeholder="Name"
                     autoCapitalize="sentences"
                     editable={!mutation.isPending}
@@ -71,7 +68,7 @@ const Register = () => {
                 <StyledButton
                     onPress={onSubmit}
                     title="Register"
-                    disabled={mutation.isPending || !isValid}
+                    disabled={mutation.isPending}
                     sx={AuthStyles.button}
                 />
             </View>
