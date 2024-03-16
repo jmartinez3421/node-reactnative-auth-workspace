@@ -19,4 +19,8 @@ export default {
     Code: "Código",
     PasswordsDontMatch: "Las contraseñas no coinciden",
     Name: "Nombre",
+    EmailSent: "Correo enviado",
+    CheckEmailToResetPassword: "Revisa tu correo para restablecer tu contraseña",
+    PasswordUpdated: "Contraseña actualizada",
+    YouCanNowLogin: "Ahora puedes iniciar sesión con tu nueva contraseña",
 };

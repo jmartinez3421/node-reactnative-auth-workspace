@@ -82,7 +82,7 @@ export const ErrorCodes = [
 ];
 
 export const showValidationErrorAlert = (errors: string[]) =>
-    Alert.alert(i18n.t("common:InvalidData"), `- ${errors.join("\n\n- ")}`);
+    Alert.alert(i18n.t("common:InvalidData"), `- ${errors.map((e) => i18n.t(`errors:${e}`)).join("\n\n- ")}`);
 
 export class UserService {
     private baseURL = "/user";

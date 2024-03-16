@@ -1,0 +1,20 @@
+export default {
+    InvalidEmail: "Correo electrónico inválido",
+    EmailRequired: "El correo electrónico es requerido",
+    InvalidPassword:
+        "Formato de contraseña inválido: debe contener al menos 8 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial",
+    PasswordRequired: "La contraseña es requerida",
+    NameRequired: "El nombre es requerido",
+    TokenRequired: "El código es requerido",
+    EmailAlreadyExists: "Este correo electrónico ya está en uso",
+    NoTokenProvided: "No se proporcionó un token",
+    UserNotFound: "Usuario no encontrado",
+    InactiveUser: "Este usuario está inactivo",
+    InvalidToken: "El token proporcionado es inválido",
+    InvalidResetToken: "El código de restablecimiento proporcionado es inválido",
+    InternalError: "Error interno del servidor, por favor intente de nuevo más tarde o contacte con soporte",
+    ErrorLoggingIn: "Error al iniciar sesión, por favor intente de nuevo más tarde",
+    ErrorSendingEmail: "Error al enviar el correo electrónico",
+    ErrorUpdatingPassword: "Error al actualizar la contraseña",
+    ErrorRegistering: "Error al registrarse",
+};

@@ -15,32 +15,35 @@ import {
 } from "@/api/APIClient";
 import { AxiosError } from "axios";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 export const useForgotPasswordMutation = () => {
+    const { t } = useTranslation("auth");
     return useMutation<ForgotPasswordResponse, AxiosError<ErrorResponse>, ForgotPasswordRequest, ForgotPasswordRequest>(
         {
             mutationKey: ["forgotPassword"],
             mutationFn: (data) => authService.forgotPassword(data),
             onSuccess: () => {
-                Alert.alert("Email sent", "Check your email to reset your password");
+                Alert.alert(t("EmailSent"), t("CheckEmailToResetPassword"));
             },
             onError: (error) => {
                 if (error.response?.data.errors) {
                     showValidationErrorAlert(error.response.data.errors);
                     return;
                 }
-                Alert.alert("Error", error.response?.data.msg || "Error sending email");
+                Alert.alert("Error", t(error.response?.data.msg || "ErrorSendingEmail", { ns: "errors" }));
             },
         }
     );
 };
 
 export const useResetPasswordMutation = () => {
+    const { t } = useTranslation("auth");
     return useMutation<ResetPasswordResponse, AxiosError<ErrorResponse>, ResetPasswordRequest, ResetPasswordRequest>({
         mutationKey: ["resetPassword"],
         mutationFn: (data) => authService.resetPassword(data),
         onSuccess: () => {
-            Alert.alert("Password updated", "You can now login with your new password");
+            Alert.alert(t("PasswordUpdated"), t("YouCanNowLogin"));
             router.replace("/login");
         },
         onError: (error) => {
@@ -48,12 +51,13 @@ export const useResetPasswordMutation = () => {
                 showValidationErrorAlert(error.response.data.errors);
                 return;
             }
-            Alert.alert("Error", error.response?.data.msg || "Error updating password");
+            Alert.alert("Error", t(error.response?.data.msg || "ErrorUpdatingPassword", { ns: "errors" }));
         },
     });
 };
 
 export const useLoginMutation = () => {
+    const { t } = useTranslation("errors");
     return useMutation<LoginResponse, AxiosError<ErrorResponse>, LoginRequest, LoginRequest>({
         mutationKey: ["login"],
         mutationFn: (data) => authService.login(data),
@@ -62,12 +66,13 @@ export const useLoginMutation = () => {
                 showValidationErrorAlert(error.response.data.errors);
                 return;
             }
-            Alert.alert("Error", error.response?.data.msg || "Error logging in");
+            Alert.alert("Error", t(error.response?.data.msg || "ErrorLoggingIn"));
         },
     });
 };
 
 export const useRegisterMutation = () => {
+    const { t } = useTranslation("errors");
     return useMutation<CreateUserResponse, AxiosError<ErrorResponse>, CreateUserRequest, CreateUserRequest>({
         mutationKey: ["register"],
         mutationFn: (data) => userService.createUser(data),
@@ -76,7 +81,7 @@ export const useRegisterMutation = () => {
                 showValidationErrorAlert(error.response.data.errors);
                 return;
             }
-            Alert.alert("Error", error.response?.data.msg || "Error registering");
+            Alert.alert("Error", t(error.response?.data.msg || "ErrorRegistering"));
         },
     });
 };
