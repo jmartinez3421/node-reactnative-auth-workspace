@@ -11,6 +11,7 @@ import {
     LoginResponse,
     ResetPasswordRequest,
     ResetPasswordResponse,
+    showValidationErrorAlert,
 } from "@/api/APIClient";
 import { AxiosError } from "axios";
 import { router } from "expo-router";
@@ -24,6 +25,10 @@ export const useForgotPasswordMutation = () => {
                 Alert.alert("Email sent", "Check your email to reset your password");
             },
             onError: (error) => {
+                if (error.response?.data.errors) {
+                    showValidationErrorAlert(error.response.data.errors);
+                    return;
+                }
                 Alert.alert("Error", error.response?.data.msg || "Error sending email");
             },
         }
@@ -39,6 +44,10 @@ export const useResetPasswordMutation = () => {
             router.replace("/login");
         },
         onError: (error) => {
+            if (error.response?.data.errors) {
+                showValidationErrorAlert(error.response.data.errors);
+                return;
+            }
             Alert.alert("Error", error.response?.data.msg || "Error updating password");
         },
     });
@@ -49,6 +58,10 @@ export const useLoginMutation = () => {
         mutationKey: ["login"],
         mutationFn: (data) => authService.login(data),
         onError: (error) => {
+            if (error.response?.data.errors) {
+                showValidationErrorAlert(error.response.data.errors);
+                return;
+            }
             Alert.alert("Error", error.response?.data.msg || "Error logging in");
         },
     });
@@ -59,6 +72,10 @@ export const useRegisterMutation = () => {
         mutationKey: ["register"],
         mutationFn: (data) => userService.createUser(data),
         onError: (error) => {
+            if (error.response?.data.errors) {
+                showValidationErrorAlert(error.response.data.errors);
+                return;
+            }
             Alert.alert("Error", error.response?.data.msg || "Error registering");
         },
     });

@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import { Alert } from "react-native";
 
 export interface ErrorResponse {
     ok: false;
@@ -62,6 +63,8 @@ export interface ResetPasswordRequest {
 }
 
 export interface ResetPasswordResponse extends SuccessResponse<{ msg: string }> {}
+
+export const showValidationErrorAlert = (errors: string[]) => Alert.alert("Invalid data", `- ${errors.join("\n\n- ")}`);
 
 export class UserService {
     private baseURL = "/user";

@@ -1,70 +1,82 @@
 import React from "react";
 import { AuthStyles } from "@/styles/AuthCommonStyles";
-import { Alert, Text, View } from "react-native";
-import { StyledTextInput } from "@/components/Form/StyledTextInput";
+import { Text, View } from "react-native";
 import { Link } from "expo-router";
 import { StyledButton } from "@/components/Form/StyledButton";
 import { Loading } from "@/components/Layout/Loading";
 import { useRegisterMutation } from "@/api/AuthMutations";
 import { useSession } from "@/contexts/AuthContext";
+import { useForm } from "react-hook-form";
+import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
+
+interface RegisterFormProps {
+    name: string;
+    email: string;
+    password: string;
+}
 
 const Register = () => {
     const { login } = useSession();
 
-    const [formData, setFormData] = React.useState({
-        name: "",
-        email: "",
-        password: "",
+    const {
+        control,
+        handleSubmit,
+        formState: { isValid },
+    } = useForm<RegisterFormProps>({
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+        },
     });
 
     const mutation = useRegisterMutation();
 
-    const handleRegister = () => {
-        if (!formData.email || !formData.password || !formData.name) {
-            Alert.alert("Please fill in all fields");
-            return;
-        }
+    const onSubmit = handleSubmit((formData) => {
         mutation.mutate(formData, {
             onSuccess: ({ data }) => {
                 login(data.token);
             },
         });
-    };
+    });
 
     return (
         <View style={AuthStyles.container}>
             <Text style={AuthStyles.title}>Register</Text>
             <View style={AuthStyles.form}>
-                <StyledTextInput
-                    placeholder={"Name"}
+                <ControlledTextInput
+                    name="name"
+                    control={control}
+                    rules={{ required: true }}
+                    placeholder="Name"
                     autoCapitalize="sentences"
-                    value={formData.name}
-                    onChangeText={(name) => setFormData({ ...formData, name })}
                     editable={!mutation.isPending}
                 />
-                <StyledTextInput
-                    placeholder={"Email"}
+                <ControlledTextInput
+                    name="email"
+                    control={control}
+                    rules={{ required: true }}
+                    placeholder="Email"
                     keyboardType="email-address"
-                    value={formData.email}
-                    onChangeText={(email) => setFormData({ ...formData, email })}
                     editable={!mutation.isPending}
                 />
-                <StyledTextInput
-                    placeholder={"Password"}
+                <ControlledTextInput
+                    name="password"
+                    control={control}
+                    rules={{ required: true }}
+                    placeholder="Password"
                     secureTextEntry
-                    value={formData.password}
-                    onChangeText={(password) => setFormData({ ...formData, password })}
                     editable={!mutation.isPending}
                 />
                 <StyledButton
-                    onPress={handleRegister}
+                    onPress={onSubmit}
                     title="Register"
-                    disabled={mutation.isPending || !formData.email || !formData.password}
+                    disabled={mutation.isPending || !isValid}
                     sx={AuthStyles.button}
                 />
             </View>
             <View style={AuthStyles.separator} />
-            <Link href="/login" style={AuthStyles.link}>
+            <Link href="/login" style={AuthStyles.link} disabled={mutation.isPending}>
                 Already have an account?
             </Link>
             {mutation.isPending && <Loading />}
