@@ -9,6 +9,7 @@ import { useSession } from "@/contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
 import { EmailRegExp } from "@/utils/regExp";
+import { useTranslation } from "react-i18next";
 
 interface RegisterFormProps {
     name: string;
@@ -17,6 +18,7 @@ interface RegisterFormProps {
 }
 
 const Register = () => {
+    const { t } = useTranslation("auth");
     const { login } = useSession();
 
     const { control, handleSubmit } = useForm<RegisterFormProps>({
@@ -39,21 +41,21 @@ const Register = () => {
 
     return (
         <View style={AuthStyles.container}>
-            <Text style={AuthStyles.title}>Register</Text>
+            <Text style={AuthStyles.title}>{t("Register")}</Text>
             <View style={AuthStyles.form}>
                 <ControlledTextInput
                     name="name"
                     control={control}
-                    rules={{ required: true, pattern: EmailRegExp }}
-                    placeholder="Name"
+                    rules={{ required: true }}
+                    placeholder={t("Name")}
                     autoCapitalize="sentences"
                     editable={!mutation.isPending}
                 />
                 <ControlledTextInput
                     name="email"
                     control={control}
-                    rules={{ required: true }}
-                    placeholder="Email"
+                    rules={{ required: true, pattern: EmailRegExp }}
+                    placeholder={t("Email")}
                     keyboardType="email-address"
                     editable={!mutation.isPending}
                 />
@@ -61,20 +63,20 @@ const Register = () => {
                     name="password"
                     control={control}
                     rules={{ required: true }}
-                    placeholder="Password"
+                    placeholder={t("Password")}
                     secureTextEntry
                     editable={!mutation.isPending}
                 />
                 <StyledButton
                     onPress={onSubmit}
-                    title="Register"
+                    title={t("Register")}
                     disabled={mutation.isPending}
                     sx={AuthStyles.button}
                 />
             </View>
             <View style={AuthStyles.separator} />
-            <Link href="/login" style={AuthStyles.link} disabled={mutation.isPending}>
-                Already have an account?
+            <Link href="/auth/login" style={AuthStyles.link} disabled={mutation.isPending}>
+                {t("AlreadyHaveAnAccount")}
             </Link>
             {mutation.isPending && <Loading />}
         </View>

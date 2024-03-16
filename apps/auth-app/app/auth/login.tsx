@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
 import { ControlledSwitchRow } from "@/components/Form/ControlledComponents/ControlledSwitchRow";
 import { EmailRegExp } from "@/utils/regExp";
+import { useTranslation } from "react-i18next";
 
 interface LoginFormProps {
     email: string;
@@ -19,6 +20,7 @@ interface LoginFormProps {
 }
 
 const Login = () => {
+    const { t } = useTranslation("auth");
     const { login } = useSession();
 
     const { control, handleSubmit } = useForm<LoginFormProps>({
@@ -42,12 +44,12 @@ const Login = () => {
 
     return (
         <View style={AuthStyles.container}>
-            <Text style={AuthStyles.title}>Login</Text>
+            <Text style={AuthStyles.title}>{t("Login")}</Text>
             <View style={AuthStyles.form}>
                 <ControlledTextInput
                     name="email"
                     control={control}
-                    placeholder="Email"
+                    placeholder={t("Email")}
                     keyboardType="email-address"
                     editable={!mutation.isPending}
                     rules={{
@@ -58,7 +60,7 @@ const Login = () => {
                 <ControlledTextInput
                     name="password"
                     control={control}
-                    placeholder="Password"
+                    placeholder={t("Password")}
                     secureTextEntry
                     editable={!mutation.isPending}
                     rules={{
@@ -68,18 +70,23 @@ const Login = () => {
                 <ControlledSwitchRow
                     name="remember"
                     control={control}
-                    title="Remember me"
+                    title={t("RememberMe")}
                     sx={styles.switch}
                     disabled={mutation.isPending}
                 />
-                <Link href="/forgot-password" style={AuthStyles.link}>
-                    Forgot your password?
+                <Link href="/auth/forgot-password" style={AuthStyles.link}>
+                    {t("ForgotPasswordLink")}
                 </Link>
-                <StyledButton onPress={onSubmit} title="Login" disabled={mutation.isPending} sx={AuthStyles.button} />
+                <StyledButton
+                    onPress={onSubmit}
+                    title={t("Login")}
+                    disabled={mutation.isPending}
+                    sx={AuthStyles.button}
+                />
             </View>
             <View style={AuthStyles.separator} />
-            <Link href="/register" style={AuthStyles.link}>
-                Don't have an account?
+            <Link href="/auth/register" style={AuthStyles.link}>
+                {t("DontHaveAnAccount")}
             </Link>
             {mutation.isPending && <Loading />}
         </View>

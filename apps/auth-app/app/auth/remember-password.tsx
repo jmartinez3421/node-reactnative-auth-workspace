@@ -8,6 +8,7 @@ import { Loading } from "@/components/Layout/Loading";
 import { useForm } from "react-hook-form";
 import { ControlledTextInput } from "@/components/Form/ControlledComponents/ControlledTextInput";
 import { EmailRegExp, RememberPasswordRegExp } from "@/utils/regExp";
+import { useTranslation } from "react-i18next";
 
 interface RememberPasswordFormProps {
     email: string;
@@ -17,6 +18,7 @@ interface RememberPasswordFormProps {
 }
 
 const RememberPassword = () => {
+    const { t } = useTranslation("auth");
     const { email } = useLocalSearchParams<{ email: string }>();
 
     const { control, handleSubmit, watch, getFieldState } = useForm<RememberPasswordFormProps>({
@@ -32,7 +34,7 @@ const RememberPassword = () => {
 
     const onSubmit = handleSubmit((formData) => {
         if (formData.password !== formData.repeatPassword) {
-            Alert.alert("Passwords do not match");
+            Alert.alert(t("PasswordsDontMatch"));
             return;
         }
         mutation.mutate(formData);
@@ -45,19 +47,15 @@ const RememberPassword = () => {
 
     return (
         <View style={AuthStyles.container}>
-            <Text style={AuthStyles.title}>Reset password</Text>
+            <Text style={AuthStyles.title}>{t("ResetPassword")}</Text>
             <View style={AuthStyles.form}>
-                <Text style={AuthStyles.helper}>
-                    {!email
-                        ? "Enter your email and we will send you a link to reset your password"
-                        : "Enter the code and your new password"}
-                </Text>
+                <Text style={AuthStyles.helper}>{t(email ? "ResetPasswordHelper1" : "ResetPasswordHelper2")}</Text>
                 {!email && (
                     <ControlledTextInput
                         name="email"
                         control={control}
                         rules={{ required: true, pattern: EmailRegExp }}
-                        placeholder="Email"
+                        placeholder={t("Email")}
                         keyboardType="email-address"
                         editable={!mutation.isPending}
                     />
@@ -66,7 +64,7 @@ const RememberPassword = () => {
                     name="password"
                     control={control}
                     rules={{ required: true }}
-                    placeholder="Password"
+                    placeholder={t("Password")}
                     secureTextEntry
                     editable={!mutation.isPending}
                 />
@@ -74,7 +72,7 @@ const RememberPassword = () => {
                     name="repeatPassword"
                     control={control}
                     rules={{ required: true }}
-                    placeholder="Repeat password"
+                    placeholder={t("RepeatPassword")}
                     secureTextEntry
                     editable={!mutation.isPending}
                     hasError={repeatPasswordHasError()}
@@ -83,20 +81,20 @@ const RememberPassword = () => {
                     name="token"
                     control={control}
                     rules={{ required: true, minLength: 6, maxLength: 6, pattern: RememberPasswordRegExp }}
-                    placeholder="Code"
+                    placeholder={t("Code")}
                     keyboardType="numeric"
                     editable={!mutation.isPending}
                 />
                 <StyledButton
                     onPress={onSubmit}
-                    title="Reset password"
+                    title={t("ResetPassword")}
                     disabled={mutation.isPending}
                     sx={[AuthStyles.button, styles.button]}
                 />
             </View>
             <View style={AuthStyles.separator} />
-            <Link href="/login" style={AuthStyles.link}>
-                Go back to login
+            <Link href="/auth/login" style={AuthStyles.link}>
+                {t("BackToLogin")}
             </Link>
             {mutation.isPending && <Loading />}
         </View>

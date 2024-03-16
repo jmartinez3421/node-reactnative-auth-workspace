@@ -19,7 +19,8 @@ export const AuthStyles = StyleSheet.create({
     button: {
         marginTop: 20,
         alignSelf: "center",
-        width: "50%",
+        paddingHorizontal: 45,
+        minWidth: 300,
     },
     link: {
         color: "royalblue",

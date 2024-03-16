@@ -38,7 +38,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
             })
             .catch(() => {
                 setSession(null);
-                router.replace("/login");
+                router.replace("/auth/login");
             });
     }, []);
 
@@ -49,7 +49,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
     const logout = () => {
         setSession(null);
-        router.replace("/login");
+        router.replace("/auth/login");
     };
 
     return (
