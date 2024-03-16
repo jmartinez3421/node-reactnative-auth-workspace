@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { JwtPayload } from "@/types/JwtPayload";
 import { DocumentUser, UserModel } from "@/db/models/user";
-import { ResponseType } from "@/types/ResponseType";
+import { ErrorCodes, ResponseType } from "@/types/ResponseType";
 
 type JWTValidatorHandler = RequestHandler<
     object,
@@ -23,7 +23,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
     if (!token) {
         return res.status(401).json({
             ok: false,
-            msg: "NoTokenProvided",
+            msg: ErrorCodes.NoTokenProvided,
         });
     }
 
@@ -37,7 +37,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
         if (!loggedUser) {
             return res.status(404).json({
                 ok: false,
-                msg: "UserNotFound",
+                msg: ErrorCodes.UserNotFound,
             });
         }
 
@@ -45,7 +45,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
         if (!loggedUser.status) {
             return res.status(400).json({
                 ok: false,
-                msg: "InactiveUser",
+                msg: ErrorCodes.InactiveUser,
             });
         }
 
@@ -57,7 +57,7 @@ export const JWTValidator: JWTValidatorHandler = async (req, res, next) => {
         console.log(err);
         return res.status(401).json({
             ok: false,
-            msg: `InvalidToken`,
+            msg: ErrorCodes.InvalidToken,
         });
     }
 };

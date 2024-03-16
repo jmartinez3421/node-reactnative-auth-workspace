@@ -214,6 +214,27 @@ interface ResetPasswordResponse {
 }
 ```
 
+## Error Message Codes
+The error messages are divided into the following codes to make it easier to translate:
+
+```typescript
+enum ErrorCodes {
+    InvalidEmail = "InvalidEmail",
+    EmailRequired = "EmailRequired",
+    InvalidPassword = "InvalidPassword",
+    PasswordRequired = "PasswordRequired",
+    NameRequired = "NameRequired",
+    TokenRequired = "TokenRequired",
+    EmailAlreadyExists = "EmailAlreadyExists",
+    NoTokenProvided = "NoTokenProvided",
+    UserNotFound = "UserNotFound",
+    InactiveUser = "InactiveUser",
+    InvalidToken = "InvalidToken",
+    InvalidResetToken = "InvalidResetToken",
+    InternalError = "InternalError",
+}
+```
+
 ## Technologies
 - Node.js
 - Express

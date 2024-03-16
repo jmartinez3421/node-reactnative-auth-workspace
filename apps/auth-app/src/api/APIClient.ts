@@ -65,7 +65,7 @@ export interface ResetPasswordRequest {
 
 export interface ResetPasswordResponse extends SuccessResponse<{ msg: string }> {}
 
-export const ValidationErrorCodes = [
+export const ErrorCodes = [
     "InvalidEmail",
     "EmailRequired",
     "InvalidPassword",
@@ -78,6 +78,7 @@ export const ValidationErrorCodes = [
     "InactiveUser",
     "InvalidToken",
     "InvalidResetToken",
+    "InternalError",
 ];
 
 export const showValidationErrorAlert = (errors: string[]) =>

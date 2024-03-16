@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { DocumentUser } from "@/db/models/user";
 import bcryptjs from "bcryptjs";
-import { ResponseType } from "@/types/ResponseType";
+import { ErrorCodes, ResponseType } from "@/types/ResponseType";
 
 type CheckPasswordHandler = RequestHandler<
     object,
@@ -31,7 +31,7 @@ export const CheckPassword: CheckPasswordHandler = (req, res, next) => {
     } else
         return res.status(400).json({
             ok: false,
-            msg: "The PasswordRequired",
+            msg: ErrorCodes.PasswordRequired,
         });
 
     next();

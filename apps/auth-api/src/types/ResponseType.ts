@@ -12,3 +12,19 @@ export type ResponseType<T extends object> =
           msg: string;
           errors: string[];
       };
+
+export enum ErrorCodes {
+    InvalidEmail = "InvalidEmail",
+    EmailRequired = "EmailRequired",
+    InvalidPassword = "InvalidPassword",
+    PasswordRequired = "PasswordRequired",
+    NameRequired = "NameRequired",
+    TokenRequired = "TokenRequired",
+    EmailAlreadyExists = "EmailAlreadyExists",
+    NoTokenProvided = "NoTokenProvided",
+    UserNotFound = "UserNotFound",
+    InactiveUser = "InactiveUser",
+    InvalidToken = "InvalidToken",
+    InvalidResetToken = "InvalidResetToken",
+    InternalError = "InternalError",
+}
